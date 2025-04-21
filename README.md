@@ -41,39 +41,91 @@ Before installing osTicket, ensure you have the following:
 
 <h2>Installation Steps</h2>
 
-1️⃣ Set Up the Azure VM & IIS
-	•	Create a Windows 10 VM in Azure (osticket-vm), log in via RDP.
-	•	Install IIS with CGI enabled.
- 
  
 <img width="341" alt="osticket-vm" src="https://github.com/user-attachments/assets/4a338c0f-f0c5-4f07-bc3e-61952060631c" />
 
+🖥️ Step 1.1 – Create the Virtual Machine
+
+1. Go to [Azure Portal](https://portal.azure.com)
+2. Click **Create a Resource > Virtual Machine**
+3. Configure:
+   - **Virtual machine name**: `osticket-vm`
+   - **Resource group**: `osTicket`
+   - **Region**: Closest to your location
+   - **Image**: `Windows 10 Pro, version 22H2 – x64 Gen2`
+   - **VM size**: `Standard_D2s_v3` (2 vCPUs, 8 GiB RAM)
+✅ *Selected a compatible x64-based Windows image. Chose a VM size that balances cost and performance.*
+
 <img width="332" alt="windows:standard" src="https://github.com/user-attachments/assets/db68a7dd-3376-41ef-af16-5ae3910ebdfd" />
 
+🔐 Step 1.2 – Set Up RDP (Remote Desktop) Access
+
+1. Once deployed, locate the **public IP** of your VM
+2. Open your Remote Desktop app and enter the following:
+   - **PC name**: `20.211.83.35` *(example IP)*
+   - **Friendly name**: `osTicket`
+   - **Reconnect if connection is dropped**: ✅ Checked
+🔑 *This allows secure remote access into your VM where the osTicket stack will be configured.*
+
 <img width="436" alt="Screenshot 2025-03-05 at 9 32 43 AM" src="https://github.com/user-attachments/assets/698c4a4e-6a89-4efe-9475-fb9b137783cf" />
+
+⚙️ Step 1.3 – Enable IIS & CGI in Windows
+
+1. In the VM, open **Control Panel > Programs > Turn Windows features on or off**
+2. Check:
+   - **Internet Information Services**
+   - **CGI** (under Application Development Features)
+🌐 *IIS will host the osTicket app. CGI is required to support PHP integration.*
 
 <img width="661" alt="Screenshot 2025-03-05 at 9 44 57 AM" src="https://github.com/user-attachments/assets/fbc563f8-b48c-4847-93b1-4379a6a74042" />
 
 <img width="486" alt="Screenshot 2025-03-05 at 10 10 52 AM" src="https://github.com/user-attachments/assets/a4de914e-28a7-40c6-b194-003b30cc5d71" />
 
+Install MySQL Server Early (Optional Pre-Setup)
+
+1. Download and run **MySQL Server 5.5**
+2. Choose **Standard Configuration**
+3. Click **Next** to proceed with defaults
+🧩 *MySQL is the database engine osTicket relies on. This prepares the DB layer ahead of time.*
 
 
 
-2️⃣ Install Required Components
-	•	Install PHP Manager for IIS, IIS Rewrite Module, VC_redist, and MySQL 5.5.62.
-	•	Extract PHP 7.3.8 into C:\PHP and register it in IIS Manager.
- 
- 
 <img width="569" alt="Screenshot 2025-03-05 at 9 51 49 AM" src="https://github.com/user-attachments/assets/ecdc6703-f40b-4662-898c-fae481842e20" />
 
+Install PHP Manager for IIS
+
+Download **PHP Manager for IIS** from the official site and install it.
+
+
 <img width="723" alt="Screenshot 2025-03-05 at 10 00 03 AM" src="https://github.com/user-attachments/assets/63c13259-a27f-485a-ab5a-fe20d4f1fa4a" />
+
+Extract PHP 7.3.8 to C:\PHP
+
+1. Download PHP 7.3.8 (non-thread safe, zip version)  
+2. Extract it to: `C:\PHP`  
+3. You should see folders like `ext`, `lib`, and files like `php.ini`, `php.exe`, etc.
 
 <img width="481" alt="Screenshot 2025-03-05 at 10 03 00 AM" src="https://github.com/user-attachments/assets/efe94f55-864b-493d-b987-5d9947ee65a8" />
 
 <img width="486" alt="Screenshot 2025-03-05 at 10 10 52 AM" src="https://github.com/user-attachments/assets/264502ea-1915-433c-a3dd-f3836981022c" />
 
+Install MySQL 5.5.62
+
+#### Choose Setup Type:
+
+When the MySQL 5.5 installer prompts you:
+
+- Select **Typical** (installs most commonly used features)
+📌 *“Typical” is recommended unless you need custom configurations.*
+
 <img width="590" alt="Screenshot 2025-03-05 at 10 22 27 AM" src="https://github.com/user-attachments/assets/8ea2b6c4-df3e-4211-aa49-e7040a960266" />
 
+Configure Server:
+
+- Use **Standard Configuration**  
+- Proceed with defaults
+  🔧 *This quickly sets up the MySQL server for osTicket without needing advanced tuning.*
+  
 <img width="585" alt="Screenshot 2025-03-05 at 10 22 43 AM" src="https://github.com/user-attachments/assets/9c2dc5d4-5acd-4a22-855a-ed7305276a24" />
 
 
